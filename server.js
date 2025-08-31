@@ -21,9 +21,31 @@ cloudinary.config({
 });
 
 // Middleware - ORDER IS IMPORTANT!
+// Fixed CORS configuration
 app.use(cors({
-  origin: 'https://billion-star-front.vercel.app/',
-  origin: 'https://billion-star-front.vercel.app',
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl requests)
+    if (!origin) return callback(null, true);
+    
+    // Remove trailing slash for comparison
+    const normalizedOrigin = origin.endsWith('/') ? origin.slice(0, -1) : origin;
+    const allowedOrigins = [
+      'http://localhost:5173', // For local development
+      'https://billion-star-front.vercel.app' // Your production frontend
+    ];
+    
+    // Check if the normalized origin is in the allowed list
+    const isAllowed = allowedOrigins.some(allowed => {
+      const normalizedAllowed = allowed.endsWith('/') ? allowed.slice(0, -1) : allowed;
+      return normalizedOrigin === normalizedAllowed;
+    });
+    
+    if (isAllowed) {
+      return callback(null, origin); // Return the original origin
+    } else {
+      return callback(new Error('Not allowed by CORS'), false);
+    }
+  },
   credentials: true
 }));
 app.use(express.json());
@@ -46,7 +68,6 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/new-arrivals', newArrivalRoutes);
-
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI)
