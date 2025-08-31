@@ -22,7 +22,7 @@ cloudinary.config({
 
 // Middleware - ORDER IS IMPORTANT!
 app.use(cors({
-  origin: 'https://billion-star-front-jq13cghwk-xingthants-projects.vercel.app',
+  origin: 'https://billion-star-front.vercel.app/api/',
   credentials: true
 }));
 app.use(express.json());
