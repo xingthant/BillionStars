@@ -6,11 +6,6 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
 const cloudinary = require('cloudinary').v2;
-const allowedOrigins = [
-  'https://billion-star-front.vercel.app',
-  'https://billion-star-front.vercel.app/'
-];
-
 
 // Load environment variables from .env file
 dotenv.config();
@@ -27,17 +22,9 @@ cloudinary.config({
 
 // Middleware - ORDER IS IMPORTANT!
 app.use(cors({
-  origin: function(origin, callback) {
-    if (!origin) return callback(null, true); // allow REST tools or server-to-server requests without origin
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = `The CORS policy for this site does not allow access from the specified Origin: ${origin}`;
-      return callback(new Error(msg), false);
-    }
-    return callback(null, true);
-  },
-  credentials: true,
+  origin: ['http://localhost:5173', 'https://billion-star-front.vercel.app'],
+  credentials: true
 }));
-
 app.use(express.json());
 app.use(cookieParser());
 
@@ -59,6 +46,9 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/new-arrivals', newArrivalRoutes);
 
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'OK', timestamp: new Date().toISOString() });
+});
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI)
