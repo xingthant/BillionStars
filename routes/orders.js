@@ -16,7 +16,9 @@ router.get('/', requireAdmin, async (req, res) => {
 
 router.get('/my-orders', requireAuth, async (req, res) => {
   try {
-    const orders = await Order.find({ clerkUserId: req.user._id })
+    console.log('User ID:', req.user._id);
+    console.log('User object:', req.user);
+   const orders = await Order.find({ clerkUserId: req.user._id.toString() })
       .sort({ createdAt: -1 });
     res.json(orders);
   } catch (error) {
