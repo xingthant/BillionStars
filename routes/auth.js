@@ -25,7 +25,6 @@ router.post('/register', async (req, res) => {
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'none',
       maxAge: 7 * 24 * 60 * 60 * 1000，
-      domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : undefined
     });
 
     res.status(201).json({
@@ -58,7 +57,7 @@ router.post('/login', async (req, res) => {
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      sameSite: 'none',
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
     res.json({
@@ -83,14 +82,6 @@ router.post('/logout', (req, res) => {
 
 router.get('/me', requireAuth, (req, res) => {
   res.json({ user: req.user });
-});
-
-router.get('/test-auth', requireAuth, (req, res) => {
-  res.json({ message: 'Authenticated!', user: req.user });
-});
-
-router.get('/test-admin', requireAdmin, (req, res) => {
-  res.json({ message: 'Admin access granted!', user: req.user });
 });
 
 module.exports = router;
