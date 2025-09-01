@@ -21,11 +21,17 @@ cloudinary.config({
 
 // Middleware - ORDER IS IMPORTANT!
 app.use(cors({
-  origin: 'https://billion-star-front.vercel.app',
+  origin: [
+    'http://localhost:5173', 
+    'https://billion-star-front.vercel.app'
+  ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  exposedHeaders: ['Set-Cookie']
 }));
+// Handle preflight requests
+app.options('*', cors());
 app.use(express.json());
 app.use(cookieParser());
 
