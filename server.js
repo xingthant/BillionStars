@@ -7,6 +7,7 @@ const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
 const cloudinary = require('cloudinary').v2;
 
+// Load environment variables from .env file
 dotenv.config();
 
 const app = express();
@@ -21,17 +22,9 @@ cloudinary.config({
 
 // Middleware - ORDER IS IMPORTANT!
 app.use(cors({
-  origin: [
-    'http://localhost:5173', 
-    'https://billion-star-front.vercel.app'
-  ],
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-  exposedHeaders: ['Set-Cookie']
+  origin: 'http://localhost:5173',
+  credentials: true
 }));
-// Handle preflight requests
-app.options('*', cors());
 app.use(express.json());
 app.use(cookieParser());
 
@@ -62,12 +55,4 @@ mongoose.connect(process.env.MONGODB_URI)
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
-});
-
-app.get('/api/test', (req, res) => {
-  res.json({ 
-    message: 'Backend is working!',
-    timestamp: new Date().toISOString(),
-    cookies: req.cookies
-  });
 });
