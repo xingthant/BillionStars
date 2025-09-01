@@ -6,8 +6,6 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
 const cloudinary = require('cloudinary').v2;
-
-// Load environment variables from .env file
 dotenv.config();
 
 const app = express();
@@ -22,7 +20,7 @@ cloudinary.config({
 
 // Middleware - ORDER IS IMPORTANT!
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: 'https://billion-star-front.vercel.app',
   credentials: true
 }));
 app.use(express.json());
