@@ -16,7 +16,7 @@ const addressSchema = new mongoose.Schema({
 });
 
 const orderSchema = new mongoose.Schema({
-  clerkUserId: { type: String, required: true },
+  userId: { type: String, required: true },
   items: [orderItemSchema],
   totalAmount: { type: Number, required: true },
   shippingAddress: addressSchema,
