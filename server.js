@@ -20,12 +20,9 @@ cloudinary.config({
 
 app.use(cors({
   origin: 'https://billion-star-front.vercel.app',
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-  exposedHeaders: ['Set-Cookie']
+  credentials: true
 }));
-app.options('*', cors());
+
 app.use(express.json());
 app.use(cookieParser());
 
