@@ -20,21 +20,25 @@ const requireAuth = async (req, res, next) => {
 };
 
 const requireAdmin = async (req, res, next) => {
-  // First check authentication
-  requireAuth(req, res, (err) => {
-    if (err) {
-      return next(err);
+  try {
+    const token = req.cookies?.token;
+    if (!token) {
+      return res.status(401).json({ message: 'Authentication required' });
     }
-    
-    // Then check if user is admin
-    if (req.user && req.user.isAdmin) {
-      console.log('Admin access granted for user:', req.user._id);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.userId).select('-password'); 
+    if (!user) {
+      return res.status(401).json({ message: 'User not found' });
+    }
+    req.user = user;
+    if (req.user.isAdmin) {
       next();
     } else {
-      console.log('Admin access denied for user:', req.user?._id);
       res.status(403).json({ message: 'Admin access required' });
     }
-  });
+  } catch (error) {
+    res.status(401).json({ message: 'Invalid token' });
+  }
 };
 
 module.exports = { requireAuth, requireAdmin };
