@@ -25,7 +25,6 @@ router.post('/register', async (req, res) => {
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'none',
       maxAge: 24 * 60 * 60 * 1000,
-      domain: process.env.NODE_ENV === 'production' ? 'billionstars.onrender.com' : 'localhost'
     });
 
     res.status(201).json({
@@ -58,9 +57,8 @@ router.post('/login', async (req, res) => {
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production', // MUST be true in production
-      sameSite: 'none', // Changed from 'strict' to 'none' for cross-origin
+      sameSite: 'none',
       maxAge: 24 * 60 * 60 * 1000,
-      domain: process.env.NODE_ENV === 'production' ? 'billionstars.onrender.com' : 'localhost'
     });
     res.json({
       message: 'Login successful',
