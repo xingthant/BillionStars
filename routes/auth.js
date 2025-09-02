@@ -24,8 +24,7 @@ router.post('/register', async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'none',
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-      domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : 'localhost'
+      maxAge: 24 * 60 * 60 * 1000
     });
 
     res.status(201).json({
@@ -59,8 +58,7 @@ router.post('/login', async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production', // MUST be true in production
       sameSite: 'none', // Changed from 'strict' to 'none' for cross-origin
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-      domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : 'localhost'
+      maxAge: 24 * 60 * 60 * 1000
     });
     res.json({
       message: 'Login successful',
