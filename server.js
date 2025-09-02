@@ -18,11 +18,14 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Middleware - ORDER IS IMPORTANT!
 app.use(cors({
   origin: 'https://billion-star-front.vercel.app',
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  exposedHeaders: ['Set-Cookie']
 }));
+app.options('*', cors());
 app.use(express.json());
 app.use(cookieParser());
 
